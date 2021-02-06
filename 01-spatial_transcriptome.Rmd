@@ -10,7 +10,7 @@ In this pratical session, you will learn :
 * how to visualize co-expressed genes in UMAP ;
 * how to map dissociated single cells back to their tissue of origin using novoSpaRc (de novo Spatial Reconstruction of Single-Cell Gene Expression).
 
-We will be using one of the dataset publilshied with Nitizan et al. The data are alreay filtered ("high quality cells") and log-normalized. 
+We will be using one of the dataset publilshied with {Nitizan2019} et al. The data are alreay filtered ("high quality cells") and log-normalized. 
 
 
 ## Sources of inspiration{.unnumbered}
@@ -21,8 +21,8 @@ This course material is based on Novosparc tutorial on github:
 
 ## Bibliography{.unnumbered}
 
-* Karaiskos et al.The Drosophila embryo at single-cell transcriptome resolution. Science13 Oct 2017 : 194-199 
-* Nitzan et al. Gene expression cartography. Nature.2019 Dec;576(7785):132-137.  
+* {#Karaiskos2017} et al.The Drosophila embryo at single-cell transcriptome resolution. Science13 Oct 2017 : 194-199 
+* {#Nitzan2019} et al. Gene expression cartography. Nature.2019 Dec;576(7785):132-137.  
 * [working with Python in R](https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html)
 
 # Working in Python in RStudio
@@ -95,9 +95,9 @@ Each compartment can be used to store:
 
 * data from multiple modalities, such as RNAseq (slot `assays`, sub-slot `RNA`), ATAC-seq… 
 * results of analyses: dimension reduction, clustering ...
-*...
+* etc.
 
-You navigate through this hierarchy using `@` and `$` signs. 
+You navigate through this hierarchy using `@` and `$` signs.
 ```{r view-slotNames-assays}
 slotNames(dataset@assays$RNA)
 ```
@@ -180,7 +180,7 @@ datafile_atlas  ='data/data_day2/bdtnp/atlas.txt'
 How to format the single cell matrix : 
 
 * Novosparc expect a matrix with **genes in columns and cells in rows**. Be careful, this is not the usual order ! 
-* {#Nitizan} and al. advised to use the **normalized gene expression matrix** (e.g. using the global scaling log-normalization method)
+* {#Nitizan2019} and al. advised to use the **normalized gene expression matrix** (e.g. using the global scaling log-normalization method)
 * The data need to be in the `Anndata format. Novosparc has a function to import an expression matrix and to convert it in the `Anndata` format (alternativaly you can convert a pandas dataframe to an `Anndata` easily).
 
 ```{python3}

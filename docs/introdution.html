@@ -4,19 +4,19 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Basic single-cell RNA-seq processing</title>
-  <meta name="description" content="Basic single-cell RNA-seq processing" />
+  <title>Mapping single-cell RNA-sequencing data on tissue using computations</title>
+  <meta name="description" content="Mapping single-cell RNA-sequencing data on tissue using computations" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Basic single-cell RNA-seq processing" />
+  <meta property="og:title" content="Mapping single-cell RNA-sequencing data on tissue using computations" />
   <meta property="og:type" content="book" />
   
   
   
-  <meta name="github-repo" content="git@github.com:PSL-winter-school-2021/01-monday-workshop-rna.git" />
+  <meta name="github-repo" content="git@github.com:PSL-winter-school-2021/02-tuesday-workshop-rna.git" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Basic single-cell RNA-seq processing" />
+  <meta name="twitter:title" content="Mapping single-cell RNA-sequencing data on tissue using computations" />
   
   
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Lorette Noiret, Nathalie Lehmann, Eric van Leen" />
 
 
-<meta name="date" content="2021-02-06" />
+<meta name="date" content="2021-02-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 
-<link rel="next" href="working-with-seurat.html"/>
+<link rel="next" href="working-in-python-in-rstudio.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -131,32 +131,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="introdution.html"><a href="introdution.html"><i class="fa fa-check"></i>Introdution</a></li>
-<li class="chapter" data-level="1" data-path="working-with-seurat.html"><a href="working-with-seurat.html"><i class="fa fa-check"></i><b>1</b> Working with Seurat</a><ul>
-<li class="chapter" data-level="1.1" data-path="working-with-seurat.html"><a href="working-with-seurat.html#load-the-library"><i class="fa fa-check"></i><b>1.1</b> Load the library</a></li>
-<li class="chapter" data-level="1.2" data-path="working-with-seurat.html"><a href="working-with-seurat.html#import-the-data"><i class="fa fa-check"></i><b>1.2</b> Import the data</a></li>
-<li class="chapter" data-level="1.3" data-path="working-with-seurat.html"><a href="working-with-seurat.html#explore-the-seurat-data-structure"><i class="fa fa-check"></i><b>1.3</b> Explore the Seurat data structure</a></li>
+<li class="chapter" data-level="" data-path="introdution.html"><a href="introdution.html"><i class="fa fa-check"></i>Introdution</a><ul>
+<li class="chapter" data-level="" data-path="introdution.html"><a href="introdution.html#sources-of-inspiration"><i class="fa fa-check"></i>Sources of inspiration</a></li>
+<li class="chapter" data-level="" data-path="introdution.html"><a href="introdution.html#bibliography"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="basic-single-cell-pipeline.html"><a href="basic-single-cell-pipeline.html"><i class="fa fa-check"></i><b>2</b> Basic single cell pipeline</a><ul>
-<li class="chapter" data-level="2.1" data-path="basic-single-cell-pipeline.html"><a href="basic-single-cell-pipeline.html#remove-low-quality-cells"><i class="fa fa-check"></i><b>2.1</b> Remove “low quality” cells</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="basic-single-cell-pipeline.html"><a href="basic-single-cell-pipeline.html#number-of-genes-detected-per-cell"><i class="fa fa-check"></i><b>2.1.1</b> Number of genes detected per cell</a></li>
-<li class="chapter" data-level="2.1.2" data-path="basic-single-cell-pipeline.html"><a href="basic-single-cell-pipeline.html#number-of-umis-per-cell"><i class="fa fa-check"></i><b>2.1.2</b> Number of UMIs per cell</a></li>
-<li class="chapter" data-level="2.1.3" data-path="basic-single-cell-pipeline.html"><a href="basic-single-cell-pipeline.html#percentage-of-mitochondrial-genes"><i class="fa fa-check"></i><b>2.1.3</b> Percentage of mitochondrial genes</a></li>
-<li class="chapter" data-level="2.1.4" data-path="basic-single-cell-pipeline.html"><a href="basic-single-cell-pipeline.html#group-exercise-on-filtering"><i class="fa fa-check"></i><b>2.1.4</b> Group exercise on filtering</a></li>
+<li class="chapter" data-level="1" data-path="working-in-python-in-rstudio.html"><a href="working-in-python-in-rstudio.html"><i class="fa fa-check"></i><b>1</b> Working in Python in RStudio</a></li>
+<li class="chapter" data-level="2" data-path="basic-vizualization.html"><a href="basic-vizualization.html"><i class="fa fa-check"></i><b>2</b> Basic vizualization</a><ul>
+<li class="chapter" data-level="2.1" data-path="basic-vizualization.html"><a href="basic-vizualization.html#import-data-in-seurat"><i class="fa fa-check"></i><b>2.1</b> Import data in Seurat</a></li>
+<li class="chapter" data-level="2.2" data-path="basic-vizualization.html"><a href="basic-vizualization.html#a-quick-reminder-on-seuratobject"><i class="fa fa-check"></i><b>2.2</b> A quick reminder on SeuratObject</a></li>
+<li class="chapter" data-level="2.3" data-path="basic-vizualization.html"><a href="basic-vizualization.html#perform-dimension-reductions"><i class="fa fa-check"></i><b>2.3</b> Perform dimension reductions</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="basic-single-cell-pipeline.html"><a href="basic-single-cell-pipeline.html#normalize-the-expression-in-cells"><i class="fa fa-check"></i><b>2.2</b> Normalize the expression in cells</a></li>
+<li class="chapter" data-level="3" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html"><i class="fa fa-check"></i><b>3</b> Spatial transcriptome with novoSparc</a><ul>
+<li class="chapter" data-level="3.1" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#import-data"><i class="fa fa-check"></i><b>3.1</b> Import data</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#single-cells-expression-matrix"><i class="fa fa-check"></i><b>3.1.1</b> Single cells expression matrix</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="identify-cell-populations.html"><a href="identify-cell-populations.html"><i class="fa fa-check"></i><b>3</b> Identify cell populations</a><ul>
-<li class="chapter" data-level="3.1" data-path="identify-cell-populations.html"><a href="identify-cell-populations.html#hvg"><i class="fa fa-check"></i><b>3.1</b> Select highly variables (hvg)</a></li>
-<li class="chapter" data-level="3.2" data-path="identify-cell-populations.html"><a href="identify-cell-populations.html#dimension-reduction"><i class="fa fa-check"></i><b>3.2</b> Dimension reduction</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="identify-cell-populations.html"><a href="identify-cell-populations.html#scaling"><i class="fa fa-check"></i><b>3.2.1</b> Scaling</a></li>
-<li class="chapter" data-level="3.2.2" data-path="identify-cell-populations.html"><a href="identify-cell-populations.html#pca"><i class="fa fa-check"></i><b>3.2.2</b> PCA</a></li>
-<li class="chapter" data-level="3.2.3" data-path="identify-cell-populations.html"><a href="identify-cell-populations.html#cluster-cells"><i class="fa fa-check"></i><b>3.2.3</b> Cluster cells</a></li>
-<li class="chapter" data-level="3.2.4" data-path="identify-cell-populations.html"><a href="identify-cell-populations.html#group-exercise"><i class="fa fa-check"></i><b>3.2.4</b> Group exercise</a></li>
-<li class="chapter" data-level="3.2.5" data-path="identify-cell-populations.html"><a href="identify-cell-populations.html#understand-your-clusters"><i class="fa fa-check"></i><b>3.2.5</b> Understand your clusters</a></li>
+<li class="chapter" data-level="3.2" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#create-the-geometry-of-your-tissue-target-space"><i class="fa fa-check"></i><b>3.2</b> Create the geometry of your tissue (<em>target space</em>)</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#case-1-you-know-the-cellular-locations"><i class="fa fa-check"></i><b>3.2.1</b> case 1 : you know the cellular locations</a></li>
+<li class="chapter" data-level="3.2.2" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#alternative-tissue-spaces"><i class="fa fa-check"></i><b>3.2.2</b> Alternative tissue spaces</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>4</b> Session info</a></li>
+<li class="chapter" data-level="4" data-path="predict-the-spatial-transcriptome.html"><a href="predict-the-spatial-transcriptome.html"><i class="fa fa-check"></i><b>4</b> 3. Predict the spatial transcriptome</a><ul>
+<li class="chapter" data-level="4.1" data-path="predict-the-spatial-transcriptome.html"><a href="predict-the-spatial-transcriptome.html#predict-the-spatial-transcriptome-without-landmark-genes"><i class="fa fa-check"></i><b>4.1</b> Predict the spatial transcriptome (without landmark genes)</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>5</b> Session info</a></li>
 </ul>
 
       </nav>
@@ -166,7 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Basic single-cell RNA-seq processing</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Mapping single-cell RNA-sequencing data on tissue using computations</a>
           </h1>
         </div>
 
@@ -175,29 +172,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">Basic single-cell RNA-seq processing</h1>
+<h1 class="title">Mapping single-cell RNA-sequencing data on tissue using computations</h1>
 <p class="author"><em>Lorette Noiret, Nathalie Lehmann, Eric van Leen</em></p>
-<p class="date"><em>2021-02-06</em></p>
+<p class="date"><em>2021-02-07</em></p>
 </div>
 <div id="introdution" class="section level1 unnumbered">
 <h1>Introdution</h1>
-<p><strong>Objectives</strong> : In this pratical session, you will learn :</p>
+<p><strong>Objectives</strong> :
+Yesterday, we saw how to pre-process single cell rna seq (Chromium) to extract “high quality cells”. Today we will explore further a similar dataset and use a computional approach called novoSparc to reconstruct the spatial transcriptome. Before performing an advanced technic such as spatial transcriptomics, it is good to have some kind of validation. So as the first step, we will visualize co-expressed genes in UMAP and see if we can find the same co-expression in our predicted spatial transcriptome.</p>
+<p>In this pratical session, you will learn :</p>
 <ul>
-<li>how to clean single cells data and extract high quality cells</li>
-<li>identify sub-populations of cells</li>
+<li>how to visualize co-expressed genes in UMAP ;</li>
+<li>how to map dissociated single cells back to their tissue of origin using novoSpaRc (de novo Spatial Reconstruction of Single-Cell Gene Expression).</li>
 </ul>
-<p>We will be using the R package <a href="https://satijalab.org/seurat/articles/get_started.html">Seurat</a> and apply it functionalities to subset the data published in <span class="citation">(Karaiskos et al. <a href="#ref-Karaiskos2017" role="doc-biblioref">2017</a>)</span> (replicate n°3).</p>
-<p><strong>Sources of inspiration</strong></p>
-<p>This course material is largely inspired by two great sources that we advise you to read/use in details:</p>
+<p>We will be using one of the dataset publilshied with Nitizan et al. The data are alreay filtered (“high quality cells”) and log-normalized.</p>
+<div id="sources-of-inspiration" class="section level2 unnumbered">
+<h2>Sources of inspiration</h2>
+<p>This course material is based on Novosparc tutorial on github:</p>
 <ul>
-<li><a href="https://cloud.biologie.ens.fr/index.php/s/RXkNGwtR1MLf5mo">sincellTE 2020</a> : MA Dillies, A. Rausell, M Deloger, N. Servant, M. Thomas-Chollier, A. Paquet, cours6_TP_EDA_Normalization_2020.html</li>
-<li><a href="https://satijalab.org/seurat/archive/v3.2/pbmc3k_tutorial.html">Vignette Seurat</a></li>
+<li><a href="https://github.com/rajewsky-lab/novosparc">novosparc tutorial</a>: reconstruct_drosophila_embryo_tutorial.ipynb</li>
 </ul>
 </div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-Karaiskos2017">
-<p>Karaiskos, Nikos, Philipp Wahle, Jonathan Alles, Anastasiya Boltengagen, Salah Ayoub, Claudia Kipar, Christine Kocks, Nikolaus Rajewsky, and Robert P. Zinzen. 2017. “TheDrosophilaembryo at Single-Cell Transcriptome Resolution.” <em>Science</em> 358 (6360): 194–99. <a href="https://doi.org/10.1126/science.aan3235">https://doi.org/10.1126/science.aan3235</a>.</p>
+<div id="bibliography" class="section level2 unnumbered">
+<h2>Bibliography</h2>
+<ul>
+<li>{#Karaiskos2017} et al.The Drosophila embryo at single-cell transcriptome resolution. Science13 Oct 2017 : 194-199</li>
+<li>{#Nitzan2019} et al. Gene expression cartography. Nature.2019 Dec;576(7785):132-137.<br />
+</li>
+<li><a href="https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html">working with Python in R</a></li>
+</ul>
 </div>
 </div>
             </section>
@@ -206,7 +209,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 
-<a href="working-with-seurat.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="working-in-python-in-rstudio.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

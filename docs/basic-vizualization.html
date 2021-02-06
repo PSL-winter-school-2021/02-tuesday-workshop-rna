@@ -24,7 +24,7 @@
 <meta name="author" content="Lorette Noiret, Nathalie Lehmann, Eric van Leen" />
 
 
-<meta name="date" content="2021-02-06" />
+<meta name="date" content="2021-02-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -250,20 +250,20 @@ If you are not familiar with Seurat object and scRNAseq pre-processing, you can 
 <pre><code>## Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 ## To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
 ## This message will be shown once per session</code></pre>
-<pre><code>## 23:59:47 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>## 23:59:47 Read 1297 rows and found 35 numeric columns</code></pre>
-<pre><code>## 23:59:47 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>## 23:59:47 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>## 00:17:36 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>## 00:17:36 Read 1297 rows and found 35 numeric columns</code></pre>
+<pre><code>## 00:17:36 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>## 00:17:36 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>## 0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>## [----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>## **************************************************|
-## 23:59:47 Writing NN index file to temp file /tmp/RtmpT4awwo/file1c32ab3498819f
-## 23:59:47 Searching Annoy index using 1 thread, search_k = 3000
-## 23:59:47 Annoy recall = 100%
-## 23:59:48 Commencing smooth kNN distance calibration using 1 thread
-## 23:59:48 Initializing from normalized Laplacian + noise
-## 23:59:49 Commencing optimization for 500 epochs, with 50690 positive edges
-## 23:59:52 Optimization finished</code></pre>
+## 00:17:36 Writing NN index file to temp file /tmp/RtmpXI7aEp/file1c341a6f166273
+## 00:17:36 Searching Annoy index using 1 thread, search_k = 3000
+## 00:17:36 Annoy recall = 100%
+## 00:17:37 Commencing smooth kNN distance calibration using 1 thread
+## 00:17:37 Initializing from normalized Laplacian + noise
+## 00:17:38 Commencing optimization for 500 epochs, with 50690 positive edges
+## 00:17:41 Optimization finished</code></pre>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="basic-vizualization.html#cb37-1"></a><span class="kw">DimPlot</span>(dataset, <span class="dt">reduction =</span> <span class="st">&quot;umap&quot;</span>)</span></code></pre></div>
 <p><img src="02-tuesday-workshop-rna_files/figure-html/plot-umap-1.png" width="672" /></p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basic-vizualization.html#cb38-1"></a><span class="co"># Select other genes </span></span>
