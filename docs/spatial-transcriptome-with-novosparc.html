@@ -33,6 +33,7 @@
   
 <link rel="prev" href="basic-vizualization.html"/>
 <link rel="next" href="predict-the-spatial-transcriptome.html"/>
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,22 +51,21 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -85,7 +85,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -131,26 +131,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="introdution.html"><a href="introdution.html"><i class="fa fa-check"></i>Introdution</a><ul>
+<li class="chapter" data-level="" data-path="introdution.html"><a href="introdution.html"><i class="fa fa-check"></i>Introdution</a>
+<ul>
 <li class="chapter" data-level="" data-path="introdution.html"><a href="introdution.html#sources-of-inspiration"><i class="fa fa-check"></i>Sources of inspiration</a></li>
 <li class="chapter" data-level="" data-path="introdution.html"><a href="introdution.html#bibliography"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="working-in-python-in-rstudio.html"><a href="working-in-python-in-rstudio.html"><i class="fa fa-check"></i><b>1</b> Working in Python in RStudio</a></li>
-<li class="chapter" data-level="2" data-path="basic-vizualization.html"><a href="basic-vizualization.html"><i class="fa fa-check"></i><b>2</b> Basic vizualization</a><ul>
+<li class="chapter" data-level="2" data-path="basic-vizualization.html"><a href="basic-vizualization.html"><i class="fa fa-check"></i><b>2</b> Basic vizualization</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="basic-vizualization.html"><a href="basic-vizualization.html#import-data-in-seurat"><i class="fa fa-check"></i><b>2.1</b> Import data in Seurat</a></li>
 <li class="chapter" data-level="2.2" data-path="basic-vizualization.html"><a href="basic-vizualization.html#a-quick-reminder-on-seuratobject"><i class="fa fa-check"></i><b>2.2</b> A quick reminder on SeuratObject</a></li>
 <li class="chapter" data-level="2.3" data-path="basic-vizualization.html"><a href="basic-vizualization.html#perform-dimension-reductions"><i class="fa fa-check"></i><b>2.3</b> Perform dimension reductions</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html"><i class="fa fa-check"></i><b>3</b> Spatial transcriptome with novoSparc</a><ul>
-<li class="chapter" data-level="3.1" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#import-data"><i class="fa fa-check"></i><b>3.1</b> Import data</a><ul>
+<li class="chapter" data-level="3" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html"><i class="fa fa-check"></i><b>3</b> Spatial transcriptome with novoSparc</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#import-data"><i class="fa fa-check"></i><b>3.1</b> Import data</a>
+<ul>
 <li class="chapter" data-level="3.1.1" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#single-cells-expression-matrix"><i class="fa fa-check"></i><b>3.1.1</b> Single cells expression matrix</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#create-the-geometry-of-your-tissue-target-space"><i class="fa fa-check"></i><b>3.2</b> Create the geometry of your tissue (<em>target space</em>)</a><ul>
+<li class="chapter" data-level="3.2" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#create-the-geometry-of-your-tissue-target-space"><i class="fa fa-check"></i><b>3.2</b> Create the geometry of your tissue (<em>target space</em>)</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#case-1-you-know-the-cellular-locations"><i class="fa fa-check"></i><b>3.2.1</b> case 1 : you know the cellular locations</a></li>
 <li class="chapter" data-level="3.2.2" data-path="spatial-transcriptome-with-novosparc.html"><a href="spatial-transcriptome-with-novosparc.html#alternative-tissue-spaces"><i class="fa fa-check"></i><b>3.2.2</b> Alternative tissue spaces</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="predict-the-spatial-transcriptome.html"><a href="predict-the-spatial-transcriptome.html"><i class="fa fa-check"></i><b>4</b> 3. Predict the spatial transcriptome</a><ul>
+<li class="chapter" data-level="4" data-path="predict-the-spatial-transcriptome.html"><a href="predict-the-spatial-transcriptome.html"><i class="fa fa-check"></i><b>4</b> 3. Predict the spatial transcriptome</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="predict-the-spatial-transcriptome.html"><a href="predict-the-spatial-transcriptome.html#predict-the-spatial-transcriptome-without-landmark-genes"><i class="fa fa-check"></i><b>4.1</b> Predict the spatial transcriptome (without landmark genes)</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>5</b> Session info</a></li>
@@ -171,9 +177,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="spatial-transcriptome-with-novosparc" class="section level1">
+<div id="spatial-transcriptome-with-novosparc" class="section level1" number="3">
 <h1><span class="header-section-number"> 3</span> Spatial transcriptome with novoSparc</h1>
-<div id="import-data" class="section level2">
+<div id="import-data" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Import data</h2>
 <p>novoSpaRc is an algorithm that predicts the location of dissociated single cells. To work, the algorithm needs :</p>
 <ul>
@@ -181,7 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>the shape/geometry of the tissue of origin</li>
 </ul>
 <p>The performance is greatly increased if you provide some marker genes (also called landmarks / atlas) for which the expression patterns are known.</p>
-<div id="single-cells-expression-matrix" class="section level3">
+<div id="single-cells-expression-matrix" class="section level3" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> Single cells expression matrix</h3>
 <pre class="python3"><code># Single data : expression matrix (already imported)
 datafile_sc      =&#39;data/data_day2/drosophila_scRNAseq/dge_normalized.txt&#39;
@@ -195,7 +201,7 @@ datafile_atlas  =&#39;data/data_day2/bdtnp/atlas.txt&#39;</code></pre>
 <p>How to format the single cell matrix :</p>
 <ul>
 <li>Novosparc expect a matrix with <strong>genes in columns and cells in rows</strong>. Be careful, this is not the usual order !</li>
-<li>{#Nitizan} and al. advised to use the <strong>normalized gene expression matrix</strong> (e.g. using the global scaling log-normalization method)</li>
+<li>{#Nitizan2019} and al. advised to use the <strong>normalized gene expression matrix</strong> (e.g. using the global scaling log-normalization method)</li>
 <li>The data need to be in the <code>Anndata format. Novosparc has a function to import an expression matrix and to convert it in the</code>Anndata<code>format (alternativaly you can convert a pandas dataframe to an</code>Anndata` easily).</li>
 </ul>
 <pre class="python3"><code>import novosparc
@@ -217,7 +223,7 @@ dataset,hvg   = novosparc.pp.subset_to_hvg(dataset, gene_list = hvg )
 dataset.shape</code></pre>
 </div>
 </div>
-<div id="create-the-geometry-of-your-tissue-target-space" class="section level2">
+<div id="create-the-geometry-of-your-tissue-target-space" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Create the geometry of your tissue (<em>target space</em>)</h2>
 <p>You need to create the grid that describes the shape of your tissue (location of the cells in the tissue).</p>
 <p>You have 3 options :</p>
@@ -226,7 +232,7 @@ dataset.shape</code></pre>
 <li>either 2) you don’t know the cellular locations, but you know the shape of your tissue;</li>
 <li>either 3) you know nothing and will just assume that your tissue is a rectangle.</li>
 </ul>
-<div id="case-1-you-know-the-cellular-locations" class="section level3">
+<div id="case-1-you-know-the-cellular-locations" class="section level3" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> case 1 : you know the cellular locations</h3>
 <p>We suppose that you have a file that contain the XYZ location of each cells in your tissue.</p>
 <p>Note : if your tissue is flat, you can set the Z-coordinate to 1.</p>
@@ -249,7 +255,7 @@ plt.show()
 plt.close()
 </code></pre>
 </div>
-<div id="alternative-tissue-spaces" class="section level3">
+<div id="alternative-tissue-spaces" class="section level3" number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> Alternative tissue spaces</h3>
 <p>If you do not know the cellular locations of your tissue, you can create them. novoSpaRc has two functions that enable to construct them quickly.
 #### case 2: you know the shape of your tissue
@@ -265,7 +271,7 @@ plt.figure()
 plt.scatter(locations2[:, 0], locations2[:, 1],s=1)
 plt.show()
 plt.close()</code></pre>
-<div id="case-3-you-assume-that-your-tissue-is-a-rectangle" class="section level4">
+<div id="case-3-you-assume-that-your-tissue-is-a-rectangle" class="section level4" number="3.2.2.1">
 <h4><span class="header-section-number">3.2.2.1</span> case 3 : you assume that your tissue is a rectangle</h4>
 <p>The function <em>construct_target_grid</em> can be used to construct a basic rectangular grid as target space. The only parameter is the total number of cellular locations on the target grid.</p>
 <pre class="python3"><code>locations3 = novosparc.geometry.construct_target_grid(500)

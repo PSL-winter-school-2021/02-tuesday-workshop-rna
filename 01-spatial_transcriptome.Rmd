@@ -2,7 +2,8 @@
 # Introdution {.unnumbered}
 
 **Objectives** : 
-Yesterday, we saw how to pre-process single cell rna seq (Chromium) to extract "high quality cells". Today we will explore further a similar dataset and use a computional approach called novoSparc to reconstruct the spatial transcriptome. Before performing an advanced technic such as spatial transcriptomics, it is good to have some kind of validation. So as the first step, we will visualize co-expressed genes in UMAP and see if we can find the same co-expression in our predicted spatial transcriptome. 
+
+Yesterday, we saw how to pre-process single cell rna sequencing data (Drop-seq) to extract "high quality cells". Today, we will explore further a similar dataset and use a computional approach called _novoSparc_ to reconstruct the spatial transcriptome. Before performing an advanced technic such as spatial transcriptomics, it is good to have some kind of validation. So as the first step, we will visualize co-expressed genes in UMAP and see if we can find the same co-expression in our predicted spatial transcriptome. 
 
 
 In this pratical session, you will learn : 
@@ -10,7 +11,7 @@ In this pratical session, you will learn :
 * how to visualize co-expressed genes in UMAP ;
 * how to map dissociated single cells back to their tissue of origin using novoSpaRc (de novo Spatial Reconstruction of Single-Cell Gene Expression).
 
-We will be using one of the dataset publilshied with {Nitizan2019} et al. The data are alreay filtered ("high quality cells") and log-normalized. 
+We will be using one of the dataset publilshied with Nitizan et al (Nature 2019). The data are alreay filtered ("high quality cells") and log-normalized. 
 
 
 ## Sources of inspiration{.unnumbered}
@@ -21,9 +22,9 @@ This course material is based on Novosparc tutorial on github:
 
 ## Bibliography{.unnumbered}
 
-* {#Karaiskos2017} et al.The Drosophila embryo at single-cell transcriptome resolution. Science13 Oct 2017 : 194-199 
-* {#Nitzan2019} et al. Gene expression cartography. Nature.2019 Dec;576(7785):132-137.  
-* [working with Python in R](https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html)
+* Karaiskos et al.The Drosophila embryo at single-cell transcriptome resolution. Science13 Oct 2017 : 194-199 
+* Nitzan  et al. Gene expression cartography. Nature.2019 Dec;576(7785):132-137.  
+* Tutorial [working with Python in R](https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html)
 
 # Working in Python in RStudio
 RStudio makes it easy to combine R and Python in a single data science project thanks to the package "reticulate". You just need to specify the language you want to use at the beginning of the chunk.
@@ -63,10 +64,7 @@ Print the variable `y` in Python:
 print(y)
 ```
 # Basic vizualization
-In this section, we will perfome some basic analyses of the dataset provided in Nitizan et al. using Seurat. 
-We will group cells in clusters and visualise the group using UMAP. A quick analysis of the cluster to identfy 
-Project 
-Check if clusters of cells found in step 1  TO COMPLETE
+In this section, we will perfome sosme basic analyses of the dataset provided in Nitizan et al. using Seurat. We will visualize the cells in a reduced space using UMAP and visualize the expression of some genes. 
 If you are not familiar with Seurat object and scRNAseq pre-processing, you can look at yesterday's tutorial, which is available on [github](https://github.com/PSL-winter-school-2021/01-monday-workshop-rna). 
 
 ## Import data in Seurat 
@@ -76,7 +74,7 @@ library(Seurat)
 ```
 
 We import the log-normalized high quality cells as a dataframe and then convert the dataframe to a Seurat object. 
-```{r}
+```{r, message=FALSE, message = FALSE}
 log.nrmlz.matrix <- read.table("data/data_day2/drosophila_scRNAseq/dge_normalized.txt", sep='\t', row.names=1)
 dim(log.nrmlz.matrix)
 print(log.nrmlz.matrix[1:3,1:4])
@@ -103,6 +101,7 @@ slotNames(dataset@assays$RNA)
 ```
 
 The structure of the Seurat object reflects the pre-processing steps. The scRNAseq workflow consists of 3 main steps :
+
 * start with raw expression matrix (UMIs after sequencing) and filter out "low quality cells" : data are stored in the compartement `counts`; 
 * log-normalize the data: to correct for sequencing biais : `data`
 * perform a dimension reduction such as PCA to reduce the computation time and unnecessary information. PCA requires the data to normalized and scaled : `scale.data`. 
@@ -113,9 +112,6 @@ When analysing scRNAseq data, you will usually perform some clustering to identi
 
 ```{r load-hvg}
 list_hvg  = read.csv("data/data_day2/drosophila_scRNAseq/high_var_genes.txt", header=FALSE)
-
-# the list of gene was imported as a dataframe, we can convert it to a list
-dataset@assays$RNA@var.features  = as.list(list_hvg$V1)
 ```
 
 ```{r run-pca, warning=FALSE, message=FALSE}
@@ -153,9 +149,10 @@ FeaturePlot(object = dataset,
             reduction = "umap",
             pt.size = 0.2)
 ```
+# Group discussion
+How could you identify the genes specifically expressed in one cluster 
 
-
-# Spatial transcriptome with novoSparc
+# Spatial transcriptome with novoSpaRc
 ## Import data 
 novoSpaRc is an algorithm that  predicts the location of dissociated single cells. To work, the algorithm needs :
 
@@ -166,28 +163,32 @@ The performance is greatly increased if you provide some marker genes (also call
 
 
 ### Single cells expression matrix
+
+List of files to import: 
 ```{python3}
 # Single data : expression matrix (already imported)
 datafile_sc      ='data/data_day2/drosophila_scRNAseq/dge_normalized.txt'
 
-# Optional : provide a list of highly variable genes (speed up the calculations if we only map a small number of genes)
-datafile_sc_hvg  ='data/data_day2/drosophila_scRNAseq/high_var_genes.txt'
-# Optional : geometry of the tissue
+
+# optional geometry of the tissue (if you don;t have it you can assume your tissue is a rectangle )
 datafile_geom   ='data/data_day2/bdtnp/geometry.txt'
+# Optional : list of highly variable genes (to speed up computations)
+datafile_sc_hvg  ='data/data_day2/drosophila_scRNAseq/high_var_genes.txt'
 # Optional : Landamark genes = genes with known pattern of expression (eg. FISH image...)
 datafile_atlas  ='data/data_day2/bdtnp/atlas.txt'
 ```
 How to format the single cell matrix : 
 
 * Novosparc expect a matrix with **genes in columns and cells in rows**. Be careful, this is not the usual order ! 
-* {#Nitizan2019} and al. advised to use the **normalized gene expression matrix** (e.g. using the global scaling log-normalization method)
-* The data need to be in the `Anndata format. Novosparc has a function to import an expression matrix and to convert it in the `Anndata` format (alternativaly you can convert a pandas dataframe to an `Anndata` easily).
+* Nitizan et al. advised to use the **normalized gene expression matrix** (e.g. using the global scaling log-normalization method)
+* The data need to be in the `Anndata` format. Novosparc has a function to import an expression matrix and to convert it in the `Anndata` format (alternativaly you can convert a pandas dataframe to an `Anndata`).
 
 ```{python3}
 import novosparc
 dataset   = novosparc.io.load_data(datafile_sc)
-
-dataset   = dataset.T  # in this example we have to tanspose the matrix to have gene in columns and cells in rows
+print(dataset)
+# Tanspose the matrix to have gene in columns and cells in rows
+dataset   = dataset.T  
 print ('number of cells: ',dataset.shape[0],'\nnumber of genes: ', dataset.shape[1])
 print("Gene names :", dataset.var.index.tolist()[:10])
 
@@ -244,9 +245,11 @@ plt.close()
 
 ```
 ### Alternative tissue spaces
-If you do not know the cellular locations of your tissue, you can create them. novoSpaRc has  two functions that enable to construct them quickly.
+If you do not know the cellular locations of your tissue, you can create them. novoSpaRc has two functions that enable to construct them quickly.
+
 #### case 2: you know the shape of your tissue
-he function *create_target_space_from_image* creates a target space by using a user-generated image. The image has to be a black shape drawn onto a white background. You can do it in Fiji for instance.
+
+The function *create_target_space_from_image* creates a target space by using a user-generated image. The image has to be a black shape drawn onto a white background. You can do it in Fiji for instance.
 ```{python3}
 tissue_path = 'data/data_day2/tissue_example.png'
 locations2   = novosparc.geometry.create_target_space_from_image(tissue_path)
