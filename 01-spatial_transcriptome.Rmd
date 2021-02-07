@@ -26,23 +26,42 @@ This course material is based on Novosparc tutorial on github:
 * Nitzan  et al. Gene expression cartography. Nature.2019 Dec;576(7785):132-137.  
 * Tutorial [working with Python in R](https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html)
 
+# What to install
+If you work from your local computer, you need :
+
+* Install the following R library using the console :
+    + install.package("devtool") : to get the `install_github` function
+    + install_github("rstudio/reticulate") : to install the dev version of 
+    reticulate and work with Python in R
+    + install.package("bookdown") (to have a cool notebook at the end)
+    + install.package("knitr") : to manange the outputs (figures..)
+    + install.package("Seurat ") : useful to analyse scRNAseq data in R
+    
+* Install in Python3 using "Terminal"
+    + pip3 install numpy : to manipulate data arry
+    + pip3 install matplotlib : for graphs
+    + pip3 install novosparc : for sc mapping
+    + pip3 install anndata : : useful to analyse scRNAseq data in Python
+
 # Working in Python in RStudio
 RStudio makes it easy to combine R and Python in a single data science project thanks to the package "reticulate". You just need to specify the language you want to use at the beginning of the chunk.
 
 
 ```{r setup}
 library(reticulate) # to use Python through a R framework
-
+library("knitr")
+knitr::knit_engines$set(python=reticulate::eng_python)
 # optional : check the version of Python that you are using (not useful for this workshop)
 # use_python("/usr/local/bin/python3.6", required = TRUE) 
 ```
-To import package from Python, the syntax is a but different:
+To import package from Python, the syntax is a bit different:
 
 ```{python3, message = FALSE}
 import numpy as np   # we use the alias np to call function from the package numpy
 import novosparc
 import matplotlib.pyplot as plt
 import anndata as an
+
 ```
 
 Create a variable `x` in  Python :
