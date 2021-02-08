@@ -1,3 +1,4 @@
+what-to-install
 working-in-python-in-rstudio
 basic-vizualization
 import-data-in-seurat
@@ -9,6 +10,7 @@ single-cells-expression-matrix
 create-the-geometry-of-your-tissue-target-space
 case-1-you-know-the-cellular-locations
 alternative-tissue-spaces
+case-2-you-know-the-shape-of-your-tissue
 case-3-you-assume-that-your-tissue-is-a-rectangle
 predict-the-spatial-transcriptome
 predict-the-spatial-transcriptome-without-landmark-genes
