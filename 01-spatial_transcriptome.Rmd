@@ -49,7 +49,7 @@ RStudio makes it easy to combine R and Python in a single data science project t
 
 ```{r setup}
 library(reticulate) # to use Python through a R framework
-library("knitr")
+library(knitr)
 knitr::knit_engines$set(python=reticulate::eng_python)
 # optional : check the version of Python that you are using (not useful for this workshop)
 # use_python("/usr/local/bin/python3.6", required = TRUE) 
@@ -58,10 +58,9 @@ To import package from Python, the syntax is a bit different:
 
 ```{python3, message = FALSE}
 import numpy as np   # we use the alias np to call function from the package numpy
-import novosparc
+#import novosparc
 import matplotlib.pyplot as plt
-import anndata as an
-
+#import anndata as an
 ```
 
 Create a variable `x` in  Python :
@@ -83,13 +82,24 @@ Print the variable `y` in Python:
 print(y)
 ```
 # Basic vizualization
-In this section, we will perfome sosme basic analyses of the dataset provided in Nitizan et al. using Seurat. We will visualize the cells in a reduced space using UMAP and visualize the expression of some genes. 
+In this section, we will perfome some basic analyses of the dataset provided in Nitizan et al. using Seurat. We will visualize the cells in a reduced space using UMAP and visualize the expression of some genes. 
 If you are not familiar with Seurat object and scRNAseq pre-processing, you can look at yesterday's tutorial, which is available on [github](https://github.com/PSL-winter-school-2021/01-monday-workshop-rna). 
 
 ## Import data in Seurat 
 
+```{r, echo=FALSE}
+# install package if necessary
+if (!requireNamespace("BiocManager", quietly = TRUE))
+	    install.packages("BiocManager")
+BiocManager::install("org.Dm.eg.db")
+BiocManager::install("clusterProfiler")
+```
+
 ```{r, message=FALSE, message = FALSE}
 library(Seurat)
+library(ggplot2)
+library(org.Dm.eg.db)
+library(clusterProfiler)
 ```
 
 We import the log-normalized high quality cells as a dataframe and then convert the dataframe to a Seurat object. 
@@ -119,15 +129,22 @@ You navigate through this hierarchy using `@` and `$` signs.
 slotNames(dataset@assays$RNA)
 ```
 
-The structure of the Seurat object reflects the pre-processing steps. The scRNAseq workflow consists of 3 main steps :
+If you want to have a closer look at the data structure of the Seurat object, the R command `str()` might be very helpful:
+```{r}
+str(dataset)
+```
+
+
+The structure of the Seurat object also reflects the pre-processing steps. The scRNAseq workflow consists of 3 main steps :
 
 * start with raw expression matrix (UMIs after sequencing) and filter out "low quality cells" : data are stored in the compartement `counts`; 
 * log-normalize the data: to correct for sequencing biais : `data`
-* perform a dimension reduction such as PCA to reduce the computation time and unnecessary information. PCA requires the data to normalized and scaled : `scale.data`. 
- 
- 
+* perform a dimension reduction such as PCA to reduce the computation time and unnecessary information. PCA requires the data to be normalized and scaled : `scale.data`.
+
 ## Perform dimension reductions
-When analysing scRNAseq data, you will usually perform some clustering to identify sub-populations and use some technique for visualization (e.g. UMAP). These analyses are performed on a lower dimensional space. Here we perform a PCA on the list of highly variable genes provided by the authors. 
+When analysing scRNAseq data, you will usually perform some clustering to identify sub-populations and use some technique for visualization (e.g. UMAP).
+These analyses are performed on a lower dimensional space.
+Here we perform a PCA on the list of highly variable genes provided by the authors.
 
 ```{r load-hvg}
 list_hvg  = read.csv("data/data_day2/drosophila_scRNAseq/high_var_genes.txt", header=FALSE)
@@ -147,7 +164,7 @@ sum(dataset@reductions$pca@stdev[1:35])
 nPC          = 35 # number of PC kept for the analysis
 n.neighbours = 15
 resol        = 0.4 # impact the number of clusters 
-# k-nn graoh
+# k-nn graph
 dataset <- FindNeighbors(dataset, k.param = n.neighbours,dims = 1:nPC) 
 # make the clusters
 dataset <- FindClusters(dataset, resolution = resol) 
@@ -155,252 +172,183 @@ dataset <- RunUMAP(dataset, dims = 1:nPC)
 DimPlot(dataset, reduction = "umap")
 ```
 
+With the function `FeaturePlot` you can visualize the expression of some gene of interest on th UMAP:
 ```{r plot-genes}
-# Select other genes 
-#FeaturePlot(object = dataset,
-#            features = c('ftz','ImpE2','sim'),
-#            cols = c("grey", "blue"),
-#            reduction = "umap")
-
 FeaturePlot(object = dataset,
-            features = c('twi','zen','aay'),
+            features = c('twi','zen','aay', 'Antp'),
             cols = c("grey", "blue"),
             reduction = "umap",
             pt.size = 0.2)
 ```
+
+You can define here two genes that you wish to see of the next plots (so you don't have to change the gene names in the plot functions).
+```{r set-gene-names}
+gene1 <- 'twi'
+gene2 <- 'aay'
+```
+
+Let's have a look at the correlation between these two genes:
+```{r plot-co-expression}
+FeatureScatter(object = dataset, feature1 = gene1, feature2 = gene2)
+```
+
+
+```{r plot-genes-double}
+p <- FeaturePlot(object = dataset,
+         features = c(gene1, gene2),
+         cols = c('grey', 'red', 'blue'),
+         reduction = "umap",
+         order = TRUE,
+         pt.size = 0.5,
+         combine = FALSE,
+         blend = TRUE)
+print(p[[3]] + NoLegend())
+
+pp <- FeaturePlot(object = dataset,
+         features = c(gene1, gene2),
+         cols = c('white', 'red', 'blue'),
+         reduction = "umap",
+         order = TRUE,
+         pt.size = 0.5,
+         combine = FALSE,
+         blend = TRUE)
+print(pp[[3]] + NoLegend())
+```
+
+
+
 # Group discussion
-How could you identify the genes specifically expressed in one cluster 
-
-# Spatial transcriptome with novoSpaRc
-## Import data 
-novoSpaRc is an algorithm that  predicts the location of dissociated single cells. To work, the algorithm needs :
-
-* the expression matrix of the single cells data
-* the shape/geometry of the tissue of origin
-
-The performance is greatly increased if you provide some marker genes (also called landmarks / atlas) for which the expression patterns are known.
+* How could you identify the genes specifically expressed in one cluster ?
+* Play with the colors of the plots. How much can this impact the resulting UMAP ?
+* Try to find genes that are co-expressed (or anti-correlated) in this dataset.
 
 
-### Single cells expression matrix
+## Interpretation PC axes
+### Link with nUMI and nFeature
 
-List of files to import: 
-```{python3}
-# Single data : expression matrix (already imported)
-datafile_sc      ='data/data_day2/drosophila_scRNAseq/dge_normalized.txt'
-
-
-# optional geometry of the tissue (if you don;t have it you can assume your tissue is a rectangle )
-datafile_geom   ='data/data_day2/bdtnp/geometry.txt'
-# Optional : list of highly variable genes (to speed up computations)
-datafile_sc_hvg  ='data/data_day2/drosophila_scRNAseq/high_var_genes.txt'
-# Optional : Landamark genes = genes with known pattern of expression (eg. FISH image...)
-datafile_atlas  ='data/data_day2/bdtnp/atlas.txt'
-```
-How to format the single cell matrix : 
-
-* Novosparc expect a matrix with **genes in columns and cells in rows**. Be careful, this is not the usual order ! 
-* Nitizan et al. advised to use the **normalized gene expression matrix** (e.g. using the global scaling log-normalization method)
-* The data need to be in the `Anndata` format. Novosparc has a function to import an expression matrix and to convert it in the `Anndata` format (alternativaly you can convert a pandas dataframe to an `Anndata`).
-
-```{python3}
-import novosparc
-dataset   = novosparc.io.load_data(datafile_sc)
-print(dataset)
-# Tanspose the matrix to have gene in columns and cells in rows
-dataset   = dataset.T  
-print ('number of cells: ',dataset.shape[0],'\nnumber of genes: ', dataset.shape[1])
-print("Gene names :", dataset.var.index.tolist()[:10])
-
-# Alternative : convert a pandas dataframe to AnnData format
-# data = pd.read_csv(data_path,sep='\t') 
-# dataset = sc.AnnData(data )
-# dataset = dataset2.T 
-```
-To save computation time, we will only map a subset of the genes. Here we will focus on a list of highly variable genes provided with the publication.
-```{python3}
-hvg           = np.genfromtxt(datafile_sc_hvg, dtype='str')
-
-dataset,hvg   = novosparc.pp.subset_to_hvg(dataset, gene_list = hvg )
-
-dataset.shape
-```
-## Create the geometry of your tissue (*target space*)
-
-You need to create the grid that describes the shape of your tissue (location of the cells in the tissue). 
-
-You have 3 options :
-
-* either 1) you know the cellular locations and have them in a file ;
-* either 2) you don't know the cellular locations, but you know the shape of your tissue;
-* either 3) you know nothing and will just assume that your tissue is a rectangle.
-
-### case 1 : you know the cellular locations 
-We suppose that you have a file that contain the XYZ location of each cells in your tissue. 
-
-Note : if your tissue is flat, you can set the Z-coordinate to 1.
-
-```{python3, message=FALSE, warning=FALSE}
-# Read and use the bdtnp geometry
-#locations = np.loadtxt(datafile_geom, usecols=range(3), skiprows=1)
-locations = novosparc.io.load_target_space(datafile_geom, is_2D=True)
-locations = locations[:3039, :] # we are just focusing on the first 3039 positions
-print("Number of location in the tissue ",locations.shape[0])
-print(locations[0:5,:])
-```
-Each line in the geometry file gives you the XYZ coordinate of a cell.
-```{python3}
-plt.figure()
-plt.scatter(locations[:, 0], locations[:, 1], s=1)
-plt.show()
-plt.close()
-
-```
-We can visualize all the position for which $Z=1$
-```{python3}
-plt.figure()
-plt.scatter(locations[:, 0], locations[:, 1], s=1)
-plt.show()
-plt.close()
-
-```
-### Alternative tissue spaces
-If you do not know the cellular locations of your tissue, you can create them. novoSpaRc has two functions that enable to construct them quickly.
-
-#### case 2: you know the shape of your tissue
-
-The function *create_target_space_from_image* creates a target space by using a user-generated image. The image has to be a black shape drawn onto a white background. You can do it in Fiji for instance.
-```{python3}
-tissue_path = 'data/data_day2/tissue_example.png'
-locations2   = novosparc.geometry.create_target_space_from_image(tissue_path)
-print(locations2[:3,])
-```
-This creates a very large number of locations, so it is better to subsample them.
-```{python3}
-print ('dimension of original tissue space:', locations2.shape)
-locations2     = locations2[np.random.choice(locations2.shape[0], 2000), :]
-print ('dimension of downsampled tissue space:', locations2.shape[0])
-plt.figure()
-plt.scatter(locations2[:, 0], locations2[:, 1],s=1)
-plt.show()
-plt.close()
-```
-#### case 3 : you assume that your tissue is a rectangle
-The function *construct_target_grid* can be used to construct a basic rectangular grid as target space. The only parameter is the total number of cellular locations on the target grid.
-```{python3}
-locations3 = novosparc.geometry.construct_target_grid(500)
-plt.figure()
-plt.scatter(locations3[:, 0], locations3[:, 1], s=1)
-plt.show()
-plt.close()
+```{r prepare-to-plot-pca}
+# Add PCs coordinates as a metadata
+dataset <- AddMetaData(dataset, dataset@reductions$pca@cell.embeddings, colnames(dataset@reductions$pca@cell.embeddings))
+# Add UMAP coordinates as a metadata
+dataset <- AddMetaData(dataset, dataset@reductions$umap@cell.embeddings, colnames(dataset@reductions$umap@cell.embeddings))
+# Check you have the PC aggregated to the metadata
+head(dataset[[]])[1:10]
 ```
 
-# 3. Predict the spatial transcriptome
+```{r plot-seqDepth}
+FeaturePlot(object = dataset, features = "nCount_RNA",reduction = "pca")
+FeaturePlot(object = dataset, features = "nFeatures",reduction = "pca")
 
-## Predict the spatial transcriptome (without landmark genes)
-
-Once you have defined the cellular locations, you can create a "tissue" object that will contain the predicted spatial transcriptome.
-```{python3}
-# create a tissue object, the results will be saved in the directory "outputs"
-tissue = novosparc.cm.Tissue(dataset=dataset, locations=locations, output_folder='outputs') 
-
-```
-**Principle of novosparc reconstruction** (if no landmarks genes are provided) : 
-
-1. Construct a k-nearest neighbors (knn) graph 
-
-    * for the physical space (cellular location) : calculate the (euclidian) distance matrix between the  locations, then for each location only keep the k-nearest neighbours (the value k is set by *num_neighbors_s*). 
-    * for the expression space (single cells) : calculate the distance (correlation)  matrix between the  each cells, then for each location only keep the k-nearest neighbours (the value k is set by *num_neighbors_t*)
-
-2. Computes the shortest path lengths for each pair of cells, this step results in graph-based distance matrices for cells and for locations. 
-
-3) Match the N single cells to the M positions using these graphs: the algorithm try to minimize the discrepancy between the pair-wise graph-based distances in expression space and in physical space
-```{python3}
-tissue.setup_reconstruction(num_neighbors_s = 5, num_neighbors_t = 5)   # compute the knn graphs                         
-```
-Now we can reconstruct our tissue. The alpha_linear parameter controls the contribution of the two branches in novoSpaRc: alpha_linear=0 means that no prior information is available
-```{python3}
-tissue.reconstruct(alpha_linear=0, epsilon=5e-3)
-
-```
-We store the spatial gene expression matrix (sDGE) for the highly variable genes across all locations in a new variable
-```{python3}
-sdge_hvg = tissue.sdge
-```
-Plot the predicted patterns
-```{python3}
-plt.figure(figsize=(12,4))
-plt.subplot(231)
-plt.scatter(locations[:, 0], locations[:, 1], c=sdge_hvg[np.argwhere(hvg == 'ftz')[0], :].flatten(), s=1)
-plt.axis('off')
-plt.subplot(232)
-plt.scatter(locations[:, 0], locations[:, 1], c=sdge_hvg[np.argwhere(hvg == 'twi')[0], :].flatten(), s=1)
-plt.axis('off')
-plt.subplot(233)
-plt.scatter(locations[:, 0], locations[:, 1], c=sdge_hvg[np.argwhere(hvg == 'zen')[0], :].flatten(), s=1)
-plt.axis('off')
-plt.subplot(234)
-plt.scatter(locations[:, 0], locations[:, 1], c=sdge_hvg[np.argwhere(hvg == 'ImpE2')[0], :].flatten(), s=1)
-plt.axis('off')
-plt.subplot(235)
-plt.scatter(locations[:, 0], locations[:, 1], c=sdge_hvg[np.argwhere(hvg == 'sim')[0], :].flatten(), s=1)
-plt.axis('off')
-plt.subplot(236)
-plt.scatter(locations[:, 0], locations[:, 1], c=sdge_hvg[np.argwhere(hvg == 'pyr')[0], :].flatten(), s=1)
-plt.axis('off')
-plt.show()
-plt.close()
-```
-This reconstruction has been realised without priori information. We can greatly improve the prediction by adding landmark genes
-## Predict the spatial transcriptome (with landmark genes)
-### Import landmark genes
-```{python3}
-insitu_genes = np.genfromtxt(datafile_atlas, usecols=range(84), dtype='str', max_rows=1)
-atlas_matrix = np.loadtxt(datafile_atlas, usecols=range(84), skiprows=1)
-
+ggplot(dataset[[]],
+	   aes(x=PC_1, y=PC_2, color = seurat_clusters)) +
+  geom_point(aes(size = nCount_RNA)) +
+  geom_rug()
+  
+ggplot(dataset[[]],
+	   aes(x=UMAP_1, y=UMAP_2, color = seurat_clusters)) +
+  geom_point(aes(size = nCount_RNA)) +
+  geom_rug()
 ```
 
-```{python3}
-# je prends seulement 3 genes
-# faudrait filter les colonnes de atlas_matrix pour ietre sure que les noms
-# de genes sont les memes que ceux dans single cells
-insitu_genes = insitu_genes[2:5]
-atlas_matrix = atlas_matrix[:,2:5]
+```{r select-pc}
+# Extract PC gene loadings for the 10 first components
+PC_df <- dataset@reductions$pca@feature.loadings[,1:10]
 ```
 
-On cherche les colonnes dans les données single cells qui matchent
-```{python3}
-gene_names = tissue_with_markers.gene_names
-markers_in_sc = np.array([], dtype='int') # indice marker dans table sc
-
-for marker in insitu_genes:
-    marker_index = np.where(gene_names == marker)[0]
-    if len(marker_index) > 0:
-        markers_in_sc = np.append(markers_in_sc, marker_index[0])
-
-print(markers_in_sc.shape )
-print(gene_names[markers_in_sc])
-```    
-We are going to create a new tissue object and specify the markers to use
-
-```{python3}
-# contrairement au tutoriel, je ne pense pas qu'on doivent specifier la
-# amtrice de marker quand on crée l'ebjet tissue
-tissue_with_markers = novosparc.cm.Tissue(dataset=dataset, locations=locations)
-
-tissue_with_markers.setup_reconstruction(markers_to_use=markers_in_sc, insitu_matrix=atlas_matrix,num_neighbors_s = 5, num_neighbors_t = 5)   # compute the knn graphs                         
-
-
-
-```
-alpha_linear = 0.5
-
-```{python3}
-alpha_linear = 0.5
-tissue_with_markers.reconstruct(alpha_linear=0.5, epsilon=5e-3)
+```{r select-loadings}
+# Select PC to work with
+nPC <- 1
+# Select highest 5 genes in PC1
+highest_genes <- sort(PC_df[,paste0('PC_', nPC)], decreasing = TRUE)[1:5]
+lowest_genes <- sort(PC_df[,paste0('PC_', nPC)], decreasing = FALSE)[1:5]
+highest_genes
+lowest_genes
 ```
 
 
-```{python3}
-sdge_hvg2 = tissue_with_markers.sdge 
+
+### Enrichement
+```{r}
+CallGroupGo = function(list_genes){
+# groupGO return the GO profile at a specific level·
+eg = bitr(list_genes, fromType="SYMBOL", toType=c("FLYBASE","ENTREZID"), OrgDb="org.Dm.eg.db")
+# copy to clipboard for comparison with online app
+#write_clip(list_topVarPC1)
+ggo <- groupGO(gene     = na.omit(eg$ENTREZID),
+               OrgDb    = org.Dm.eg.db,
+               ont      = "BP",
+               level    = 3,
+               readable = TRUE)
+return(ggo)
+}
+
+CallEnrichGo = function(list_genes,pval,qval){
+#return the enrichment GO categories after FDR control.·
+eg = bitr(list_genes, fromType="SYMBOL", toType=c("FLYBASE","ENTREZID"), OrgDb="org.Dm.eg.db")
+
+ego <- enrichGO(gene          = na.omit(eg$ENTREZID),
+                OrgDb         = org.Dm.eg.db,
+                ont           = "BP",
+                pAdjustMethod = "BH",
+                pvalueCutoff  = pval,
+                qvalueCutoff  = qval,
+        readable      = TRUE)
+return(ego)
+}
+
+CallKeggPath = function(list_genes){
+#return the enrichment GO categories after FDR control.·
+eg = bitr(list_genes, fromType="SYMBOL", toType=c("FLYBASE","ENTREZID"), OrgDb="org.Dm.eg.db")
+
+kk<- enrichKEGG(gene          = na.omit(eg$ENTREZID),
+                organism      = org.Dm.eg.db,
+                pvalueCutoff  = 0.01,
+                use_internal_data = TRUE)
+return(kk)
+}
+
+```
+
+```{r}
+#ggo1 = CallGroupGo(list_topVarPC1)
+#ggo2 = CallGroupGo(list_topVarPC2)
+#ggo3 = CallGroupGo(list_topVarPC3)
+
+ego1 = CallEnrichGo(list_topVarPC1,0.01,0.05)
+ego1p = CallEnrichGo(list_topVarPC1_plus,0.01,0.05)
+ego1m = CallEnrichGo(list_topVarPC1_minus,0.01,0.05)
+
+ego2 = CallEnrichGo(list_topVarPC2,0.02,0.15)
+ego2p = CallEnrichGo(list_topVarPC2_plus,0.01,0.05)
+ego2m = CallEnrichGo(list_topVarPC2_minus,0.01,0.05)
+
+ego3 = CallEnrichGo(list_topVarPC3,0.02,0.15)
+ego3p = CallEnrichGo(list_topVarPC3_plus,0.01,0.05)
+ego3m = CallEnrichGo(list_topVarPC3_minus,0.01,0.05)
+```
+
+```{r}
+#barplot(ggo1, drop=TRUE, showCategory=10,main = "Genes associated with PC1")
+barplot(ego1, showCategory=25, main ="enrich genes PC1")
+barplot(ego1p, showCategory=25, main ="enrich genes PC1")
+barplot(ego1m, showCategory=25, main ="enrich genes PC1")
+```
+
+```{r}
+#barplot(ggo2, drop=TRUE, showCategory=10,main = "Genes associated with PC2")
+barplot(ego2, showCategory=25, main ="enrich genes PC2")
+barplot(ego2p, showCategory=25, main ="enrich genes PC2")
+barplot(ego2m, showCategory=25, main ="enrich genes PC2")
+```
+
+```{r}
+#barplot(ggo3, drop=TRUE, showCategory=10,main = "Genes associated with PC3")
+barplot(ego3, showCategory=25, main ="enrich genes PC3")
+barplot(ego3p, showCategory=25, main ="enrich genes PC3")
+barplot(ego3m, showCategory=25, main ="enrich genes PC3")
+```
+
+```
+
 ```
 
