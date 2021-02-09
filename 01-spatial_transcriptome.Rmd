@@ -87,7 +87,7 @@ If you are not familiar with Seurat object and scRNAseq pre-processing, you can 
 
 ## Import data in Seurat 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # install package if necessary
 if (!requireNamespace("BiocManager", quietly = TRUE))
 	    install.packages("BiocManager")
@@ -237,7 +237,7 @@ head(dataset[[]])[1:10]
 
 ```{r plot-seqDepth}
 FeaturePlot(object = dataset, features = "nCount_RNA",reduction = "pca")
-FeaturePlot(object = dataset, features = "nFeatures",reduction = "pca")
+FeaturePlot(object = dataset, features = "nFeature_RNA",reduction = "pca")
 
 ggplot(dataset[[]],
 	   aes(x=PC_1, y=PC_2, color = seurat_clusters)) +
@@ -259,16 +259,16 @@ PC_df <- dataset@reductions$pca@feature.loadings[,1:10]
 # Select PC to work with
 nPC <- 1
 # Select highest 5 genes in PC1
-highest_genes <- sort(PC_df[,paste0('PC_', nPC)], decreasing = TRUE)[1:5]
-lowest_genes <- sort(PC_df[,paste0('PC_', nPC)], decreasing = FALSE)[1:5]
-highest_genes
-lowest_genes
+list_topVarPC1_plus <- sort(PC_df[,paste0('PC_', nPC)], decreasing = TRUE)[1:5]
+list_topVarPC1_minus <- sort(PC_df[,paste0('PC_', nPC)], decreasing = FALSE)[1:5]
+list_topVarPC1_plus
+list_topVarPC1_minus
 ```
 
 
 
 ### Enrichement
-```{r}
+```{r, eval=FALSE}
 CallGroupGo = function(list_genes){
 # groupGO return the GO profile at a specific level·
 eg = bitr(list_genes, fromType="SYMBOL", toType=c("FLYBASE","ENTREZID"), OrgDb="org.Dm.eg.db")
@@ -306,15 +306,9 @@ kk<- enrichKEGG(gene          = na.omit(eg$ENTREZID),
                 use_internal_data = TRUE)
 return(kk)
 }
-
 ```
 
-```{r}
-#ggo1 = CallGroupGo(list_topVarPC1)
-#ggo2 = CallGroupGo(list_topVarPC2)
-#ggo3 = CallGroupGo(list_topVarPC3)
-
-ego1 = CallEnrichGo(list_topVarPC1,0.01,0.05)
+```{r enrich, eval=FALSE}
 ego1p = CallEnrichGo(list_topVarPC1_plus,0.01,0.05)
 ego1m = CallEnrichGo(list_topVarPC1_minus,0.01,0.05)
 
@@ -327,28 +321,9 @@ ego3p = CallEnrichGo(list_topVarPC3_plus,0.01,0.05)
 ego3m = CallEnrichGo(list_topVarPC3_minus,0.01,0.05)
 ```
 
-```{r}
+```{r, eval=FALSE}
 #barplot(ggo1, drop=TRUE, showCategory=10,main = "Genes associated with PC1")
 barplot(ego1, showCategory=25, main ="enrich genes PC1")
 barplot(ego1p, showCategory=25, main ="enrich genes PC1")
 barplot(ego1m, showCategory=25, main ="enrich genes PC1")
 ```
-
-```{r}
-#barplot(ggo2, drop=TRUE, showCategory=10,main = "Genes associated with PC2")
-barplot(ego2, showCategory=25, main ="enrich genes PC2")
-barplot(ego2p, showCategory=25, main ="enrich genes PC2")
-barplot(ego2m, showCategory=25, main ="enrich genes PC2")
-```
-
-```{r}
-#barplot(ggo3, drop=TRUE, showCategory=10,main = "Genes associated with PC3")
-barplot(ego3, showCategory=25, main ="enrich genes PC3")
-barplot(ego3p, showCategory=25, main ="enrich genes PC3")
-barplot(ego3m, showCategory=25, main ="enrich genes PC3")
-```
-
-```
-
-```
-
